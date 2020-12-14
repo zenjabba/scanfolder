@@ -100,6 +100,7 @@ get_db_items ()
 process_PAS ()
 {
    curl -d "eventType=Manual&filepath=${1}" $URL > /dev/null
+   echo "$1 added to your plex_autoscan queue!"
 }
 
 get_files
