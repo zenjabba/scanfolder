@@ -114,12 +114,7 @@ for i in "${missing_files[@]}";
 do
   f=("$(cut -d '|' -f1 <<< "$i")");
   f=${f//[$'\t\r\n']}
-  if [ $TRIGGER == "music" ]; then
-    echo "skip"
-    farray+=("${f}")
-  else
-    farray+=("$(dirname "${f}")")
-  fi
+  farray+=("${f}")
 done
 IFS=$'\n'
 readarray -t uniq < <(printf '%s\n' "${farray[@]}" | sort -u)
