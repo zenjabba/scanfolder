@@ -105,7 +105,7 @@ process_PAS ()
 {
    FOO="${1@Q}"
    eval FOO=$FOO
-   #curl -d "eventType=Manual&filepath=$FOO" $URL > /dev/null
+   curl -d "eventType=Manual&filepath=$FOO" $URL > /dev/null
    echo "$FOO added to your plex_autoscan queue!"
 }
 
