@@ -24,8 +24,7 @@ while getopts s:c:t:u:o:z:w:r:a:d:h: option; do
         r) RCLONEMOUNT=${OPTARG};;
         a) ZDTD=${OPTARG};;
         d) DAYS=${OPTARG};;
-        h) HOURS=${OPTARG};;
-               
+        h) HOURS=${OPTARG};;               
      esac
 done
 
@@ -104,8 +103,9 @@ get_db_items ()
 
 process_PAS ()
 {
-   curl -d "eventType=Manual&filepath=${1}" $URL > /dev/null
-   echo "$1 added to your plex_autoscan queue!"
+   FOO="${1@Q}"
+   curl -d "eventType=Manual&filepath=${FOO}" $URL > /dev/null
+   echo "$FOO added to your plex_autoscan queue!"
 }
 
 get_files
@@ -125,13 +125,15 @@ IFS=$'\n'
 readarray -t uniq < <(printf '%s\n' "${farray[@]}" | sort -u)
 unset IFS
 c=1
+extensions=(srt part jpg png nfo gif bin txt)
 for i2 in "${uniq[@]}"; 
 do 
   g=${i2//[$'\t\r\n']}
   if [ ! -z "$g" ]; then
-     if [ "${g}" != "${CONTAINER_FOLDER}${SOURCE_FOLDER}" ]; then
-           process_PAS "${g}";
-           c=$[$c +1]        
+     ext="${g##*.}"
+     if [ "${g}" != "${CONTAINER_FOLDER}${SOURCE_FOLDER}" ] && [[ ! "${extensions[@]}" =~ "${ext}" ]]; then        
+         process_PAS "${g}"
+         c=$[$c +1]         
      fi
   fi
 done
